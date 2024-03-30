@@ -8,8 +8,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 @TableName("tb_student")
 public class Student {
     @TableId(value = "id", type = IdType.AUTO)
