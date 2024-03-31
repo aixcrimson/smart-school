@@ -57,7 +57,8 @@ public class Swagger2Config {
                 .apiInfo(webApiInfo())
                 .select()
                 //可以测试请求头中：输入token
-                .apis(RequestHandlerSelectors.withClassAnnotation(ApiOperation.class))
+                //.apis(RequestHandlerSelectors.withClassAnnotation(ApiOperation.class))
+                .apis(RequestHandlerSelectors.basePackage("com.crimson.controller"))
                 //过滤掉admin路径下的所有页面
                 //.paths(Predicates.and(PathSelectors.regex("/sms/.*")))
                 //过滤掉所有error或error.*页面
@@ -75,7 +76,7 @@ public class Swagger2Config {
                 .title("网站-API文档")
                 .description("本文档描述了网站微服务接口定义")
                 .version("1.0")
-                .contact(new Contact("atguigu", "http://atguigu.com", "512111559@qq.com"))
+                .contact(new Contact("GotohHitori", "https://github.com", "hitori150221@outlook.com"))
                 .build();
     }
 
@@ -85,7 +86,7 @@ public class Swagger2Config {
                 .title("后台管理系统-API文档")
                 .description("本文档描述了后台管理系统微服务接口定义")
                 .version("1.0")
-                .contact(new Contact("atguigu", "http://atguigu.com", "512111559@qq.com"))
+                .contact(new Contact("GotohHitori", "https://github.com", "hitori150221@outlook.com"))
                 .build();
     }
 

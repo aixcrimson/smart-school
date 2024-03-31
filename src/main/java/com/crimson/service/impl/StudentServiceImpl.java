@@ -27,4 +27,16 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
         Student student = baseMapper.selectOne(queryWrapper);
         return student;
     }
+
+    /**
+     * 学生获取首页
+     * @param userId
+     * @return
+     */
+    @Override
+    public Student getStudentById(Long userId) {
+        QueryWrapper<Student> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("id", userId);
+        return baseMapper.selectOne(queryWrapper);
+    }
 }

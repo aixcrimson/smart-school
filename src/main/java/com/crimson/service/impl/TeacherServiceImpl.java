@@ -26,4 +26,16 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher> impl
         Teacher teacher = baseMapper.selectOne(queryWrapper);
         return teacher;
     }
+
+    /**
+     * 教师获取首页
+     * @param userId
+     * @return
+     */
+    @Override
+    public Teacher getTeacherById(Long userId) {
+        QueryWrapper<Teacher> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("id", userId);
+        return baseMapper.selectOne(queryWrapper);
+    }
 }

@@ -11,4 +11,11 @@ public interface StudentService extends IService<Student> {
      * @return
      */
     Student login(LoginForm loginForm);
+
+    /**
+     * 学生获取首页
+     * @param userId
+     * @return
+     */
+    Student getStudentById(Long userId);
 }

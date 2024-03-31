@@ -11,4 +11,11 @@ public interface TeacherService extends IService<Teacher> {
      * @return
      */
     Teacher login(LoginForm loginForm);
+
+    /**
+     * 教师获取首页
+     * @param userId
+     * @return
+     */
+    Teacher getTeacherById(Long userId);
 }

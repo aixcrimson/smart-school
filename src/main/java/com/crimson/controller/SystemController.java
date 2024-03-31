@@ -10,6 +10,7 @@ import com.crimson.service.TeacherService;
 import com.crimson.util.CreateVerifiCodeImage;
 import com.crimson.util.JwtHelper;
 import com.crimson.util.Result;
+import com.crimson.util.ResultCodeEnum;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,6 @@ public class SystemController {
     private StudentService studentService;
     @Autowired
     private TeacherService teacherService;
-
 
     @ApiOperation("获取验证码图片")
     @GetMapping("/getVerifiCodeImage")
@@ -124,5 +124,39 @@ public class SystemController {
         }
         // 查无此用户，响应失败
         return Result.fail().message("查无此用户");
+    }
+
+    @ApiOperation("通过token获取用户信息")
+    @GetMapping("/getInfo")
+    public Result getUserInfoByToken(HttpServletRequest request, @RequestHeader("token")String token){
+        // 获取用户中请求的token
+        // 检查token是否过期 20H
+        boolean isEx = JwtHelper.isExpiration(token);
+        if(isEx){
+            return Result.build(null, ResultCodeEnum.TOKEN_ERROR);
+        }
+        // 解析token，获取用户id和用户类型
+        Long userId = JwtHelper.getUserId(token);
+        Integer userType = JwtHelper.getUserType(token);
+        // 准备一个Map集合用于存储响应的数据
+        Map<String, Object> map = new HashMap<>();
+        switch (userType){
+            case 1:
+                Admin admin = adminService.getAdminById(userId);
+                map.put("user", admin);
+                map.put("userType", 1);
+                break;
+            case 2:
+                Student student = studentService.getStudentById(userId);
+                map.put("user", student);
+                map.put("userType", 2);
+                break;
+            case 3:
+                Teacher teacher = teacherService.getTeacherById(userId);
+                map.put("user", teacher);
+                map.put("userType", 3);
+                break;
+        }
+        return Result.ok(map);
     }
 }

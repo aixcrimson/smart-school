@@ -31,4 +31,16 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
 
         return admin;
     }
+
+    /**
+     * 获取管理员主页
+     * @param userId
+     * @return
+     */
+    @Override
+    public Admin getAdminById(Long userId) {
+        QueryWrapper<Admin> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("id", userId);
+        return baseMapper.selectOne(queryWrapper);
+    }
 }
