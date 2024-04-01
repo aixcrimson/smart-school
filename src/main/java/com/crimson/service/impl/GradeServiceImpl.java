@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.util.List;
+
 @Service("gradeServiceImpl")
 @Transactional
 public class GradeServiceImpl extends ServiceImpl<GradeMapper, Grade> implements GradeService {
@@ -33,5 +35,15 @@ public class GradeServiceImpl extends ServiceImpl<GradeMapper, Grade> implements
         // 分页查询数据
         Page page = baseMapper.selectPage(pageParam, queryWrapper);
         return page;
+    }
+
+    /**
+     * 获取所有Grade信息
+     * @return
+     */
+    @Override
+    public List<Grade> getGrades() {
+        List<Grade> grades = baseMapper.selectList(null);
+        return grades;
     }
 }

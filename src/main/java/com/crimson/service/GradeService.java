@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.crimson.pojo.Grade;
 
+import java.util.List;
+
 public interface GradeService extends IService<Grade> {
 
     /**
@@ -14,4 +16,10 @@ public interface GradeService extends IService<Grade> {
      * @return
      */
     IPage<Grade> getGradeByOpr(Page<Grade> page, String gradeName);
+
+    /**
+     * 获取所有Grade信息
+     * @return
+     */
+    List<Grade> getGrades();
 }

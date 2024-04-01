@@ -35,7 +35,7 @@ public class GradeController {
     public Result getGradeByOpr(
             @ApiParam("分页查询页码数") @PathVariable(value = "pageNo") Integer pageNo,
             @ApiParam("分页查询页大小") @PathVariable(value = "pageSize") Integer pageSize,
-            @ApiParam("分页查询模糊匹配班级名") String gradeName)//模糊查询条件
+            @ApiParam("分页查询模糊匹配年级名") String gradeName)//模糊查询条件
     {
         // 设置分页信息
         Page<Grade> page = new Page<>(pageNo, pageSize);
@@ -62,5 +62,12 @@ public class GradeController {
     {
         gradeService.removeByIds(ids);
         return Result.ok();
+    }
+
+    @ApiOperation("获取所有Grade信息")
+    @GetMapping("/getGrades")
+    public Result getGrades(){
+        List<Grade> grades = gradeService.getGrades();
+        return Result.ok(grades);
     }
 }
