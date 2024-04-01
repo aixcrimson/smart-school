@@ -10,10 +10,9 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Api(tags = "年级控制器")
 @RestController
@@ -43,5 +42,25 @@ public class GradeController {
         // 调用服务层方法，传入分页信息，和查询的条件
         IPage<Grade> pageRs = gradeService.getGradeByOpr(page, gradeName);
         return Result.ok(pageRs);
+    }
+
+    @ApiOperation("添加或者删除年级信息")
+    @PostMapping("/saveOrUpdateGrade")
+    public Result saveOrUpdateGrade(
+            @ApiParam("JSON的grade对象转换后台数据模型")@RequestBody Grade grade
+    ){
+        // 调用服务层方法，实现添加或者修改年级信息
+        gradeService.saveOrUpdate(grade);
+        return Result.ok();
+    }
+
+    @ApiOperation("删除一个或多个年级")
+    @DeleteMapping("/deleteGrade")
+    public Result deleteGrade(
+            @ApiParam("JSON的年级id集合，映射为后台List<Integer>")@RequestBody List<Integer> ids
+            )
+    {
+        gradeService.removeByIds(ids);
+        return Result.ok();
     }
 }
