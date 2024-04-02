@@ -1,5 +1,7 @@
 package com.crimson.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.crimson.pojo.LoginForm;
 import com.crimson.pojo.Teacher;
@@ -18,4 +20,12 @@ public interface TeacherService extends IService<Teacher> {
      * @return
      */
     Teacher getTeacherById(Long userId);
+
+    /**
+     * 分页条件查询教师信息
+     * @param page
+     * @param teacher
+     * @return
+     */
+    IPage<Teacher> getTeachersByOpr(Page<Teacher> page, Teacher teacher);
 }
