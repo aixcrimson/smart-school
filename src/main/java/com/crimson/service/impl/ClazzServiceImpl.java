@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.util.List;
+
 @Service("clazzServiceImpl")
 @Transactional
 public class ClazzServiceImpl extends ServiceImpl<ClazzMapper, Clazz> implements ClazzService {
@@ -37,5 +39,15 @@ public class ClazzServiceImpl extends ServiceImpl<ClazzMapper, Clazz> implements
         // 分页查询数据
         Page page = baseMapper.selectPage(pageParam, queryWrapper);
         return page;
+    }
+
+    /**
+     * 获取所有班级信息
+     * @return
+     */
+    @Override
+    public List<Clazz> getClazzs() {
+        List<Clazz> clazzList = baseMapper.selectList(null);
+        return clazzList;
     }
 }

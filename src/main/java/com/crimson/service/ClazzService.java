@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.crimson.pojo.Clazz;
 
+import java.util.List;
+
 public interface ClazzService extends IService<Clazz> {
 
     /**
@@ -15,4 +17,10 @@ public interface ClazzService extends IService<Clazz> {
      * @return
      */
     IPage<Clazz> getGradeByOpr(Page<Clazz> page, String gradeName, String name);
+
+    /**
+     * 获取所有班级信息
+     * @return
+     */
+    List<Clazz> getClazzs();
 }

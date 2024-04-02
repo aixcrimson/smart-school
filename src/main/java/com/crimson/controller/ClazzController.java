@@ -51,4 +51,11 @@ public class ClazzController {
         clazzService.removeByIds(ids);
         return Result.ok();
     }
+
+    @ApiOperation("获取所有班级信息")
+    @GetMapping("/getClazzs")
+    public Result getClazzs(){
+        List<Clazz> clazzList = clazzService.getClazzs();
+        return Result.ok(clazzList);
+    }
 }
