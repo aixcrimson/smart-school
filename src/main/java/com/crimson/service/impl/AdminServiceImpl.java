@@ -1,6 +1,8 @@
 package com.crimson.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.crimson.mapper.AdminMapper;
 import com.crimson.pojo.Admin;
@@ -9,6 +11,7 @@ import com.crimson.service.AdminService;
 import com.crimson.util.MD5;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 @Service("adminServiceImpl")
 @Transactional
@@ -42,5 +45,25 @@ public class AdminServiceImpl extends ServiceImpl<AdminMapper, Admin> implements
         QueryWrapper<Admin> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("id", userId);
         return baseMapper.selectOne(queryWrapper);
+    }
+
+    /**
+     * 分页条件查询管理员信息
+     * @param pageParam
+     * @param adminName
+     * @return
+     */
+    @Override
+    public IPage<Admin> getAdminByOpr(Page<Admin> pageParam, String adminName) {
+        // 封装条件
+        QueryWrapper<Admin> queryWrapper = new QueryWrapper<>();
+        if (!StringUtils.isEmpty(adminName)){
+            queryWrapper.like("name", adminName);
+        }
+        // 排序条件
+        queryWrapper.orderByAsc("id");
+        queryWrapper.orderByAsc("name");
+        Page page = baseMapper.selectPage(pageParam, queryWrapper);
+        return page;
     }
 }

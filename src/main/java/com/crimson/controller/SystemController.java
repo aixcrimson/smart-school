@@ -1,5 +1,6 @@
 package com.crimson.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.crimson.pojo.Admin;
 import com.crimson.pojo.LoginForm;
 import com.crimson.pojo.Student;
@@ -7,10 +8,7 @@ import com.crimson.pojo.Teacher;
 import com.crimson.service.AdminService;
 import com.crimson.service.StudentService;
 import com.crimson.service.TeacherService;
-import com.crimson.util.CreateVerifiCodeImage;
-import com.crimson.util.JwtHelper;
-import com.crimson.util.Result;
-import com.crimson.util.ResultCodeEnum;
+import com.crimson.util.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -22,7 +20,6 @@ import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -186,5 +183,58 @@ public class SystemController {
         }
         String headerImg = "upload/" + filename;
         return Result.ok(headerImg);
+    }
+
+    @ApiOperation("修改密码")
+    @PostMapping("/updatePwd/{oldPwd}/{newPwd}")
+    public Result updatePwd(
+            @RequestHeader("token") String token,
+            @PathVariable("oldPwd") String oldPwd,
+            @PathVariable("newPwd") String newPwd
+    ){
+        boolean yOn = JwtHelper.isExpiration(token);
+        if (yOn){
+            // token过期
+            return Result.fail().message("token失效！");
+        }
+        // 通过token获取当前登录的用户id
+        Long userId = JwtHelper.getUserId(token);
+        // 通过token获取当前登录的用户类型
+        Integer userType = JwtHelper.getUserType(token);
+        // 将明文密码转换为暗文
+        oldPwd = MD5.encrypt(oldPwd);
+        newPwd = MD5.encrypt(newPwd);
+        if(userType == 1){
+            QueryWrapper<Admin> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("id", userId.intValue()).eq("password", oldPwd);
+            Admin admin = adminService.getOne(queryWrapper);
+            if(admin != null){
+                admin.setPassword(newPwd);
+                adminService.saveOrUpdate(admin);
+            }else{
+                return Result.fail().message("原密码输入有误！");
+            }
+        }else if(userType == 2){
+            QueryWrapper<Student> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("id", userId.intValue()).eq("password", oldPwd);
+            Student student = studentService.getOne(queryWrapper);
+            if(student != null){
+                student.setPassword(newPwd);
+                studentService.saveOrUpdate(student);
+            }else {
+                return Result.fail().message("原密码输入有误！");
+            }
+        } else if(userType == 3){
+            QueryWrapper<Teacher> queryWrapper=new QueryWrapper<>();
+            queryWrapper.eq("id",userId.intValue()).eq("password", oldPwd);
+            Teacher teacher = teacherService.getOne(queryWrapper);
+            if (null!=teacher) {
+                teacher.setPassword(newPwd);
+                teacherService.saveOrUpdate(teacher);
+            }else{
+                return Result.fail().message("原密码输入有误！");
+            }
+        }
+        return Result.ok();
     }
 }

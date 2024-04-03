@@ -63,8 +63,7 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher> impl
         // 排序条件
         queryWrapper.orderByAsc("id");
         queryWrapper.orderByAsc("name");
-        IPage<Teacher> page = baseMapper.selectPage(pageParam, queryWrapper);
-        Page<Teacher> page1 = baseMapper.selectPage(pageParam, queryWrapper);
+        Page page = baseMapper.selectPage(pageParam, queryWrapper);
         return page;
     }
 }

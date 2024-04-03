@@ -67,7 +67,7 @@ public class StudentServiceImpl extends ServiceImpl<StudentMapper, Student> impl
         // 排序条件
         queryWrapper.orderByAsc("id");
         queryWrapper.orderByAsc("name");
-        IPage<Student> pages = baseMapper.selectPage(pageParam, queryWrapper);
-        return pages;
+        Page page = baseMapper.selectPage(pageParam, queryWrapper);
+        return page;
     }
 }
